@@ -4,20 +4,24 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
-const form = useForm({
+import { useForm } from 'laravel-precognition-vue';
+
+const form = useForm('post', '/register',{
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
 });
 
-const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
+// const submit = () => {
+//     form.post(route('register'), {
+//         onFinish: () => form.reset('password', 'password_confirmation'),
+//     });
+// };
+
+    const submit = () => form.submit();
 </script>
 
 <template>
@@ -36,6 +40,7 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="name"
+                    @change="form.validate('name')"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
@@ -51,6 +56,7 @@ const submit = () => {
                     v-model="form.email"
                     required
                     autocomplete="username"
+                    @change="form.validate('email')"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
